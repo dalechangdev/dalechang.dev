@@ -1,0 +1,304 @@
+.page {
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  position: relative;
+}
+
+.bgGrid {
+  position: fixed;
+  inset: 0;
+  background-image: 
+    linear-gradient(rgba(255,255,255,0.02) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(255,255,255,0.02) 1px, transparent 1px);
+  background-size: 60px 60px;
+  pointer-events: none;
+  z-index: 0;
+}
+
+/* Navigation styles moved to Navigation component */
+
+/* Main */
+.main {
+  position: relative;
+  z-index: 10;
+  flex: 1;
+  padding: 60px 48px;
+  max-width: 900px;
+  margin: 0 auto;
+  width: 100%;
+}
+
+.header {
+  margin-bottom: 60px;
+  animation: slideUp 0.6s ease-out;
+}
+
+.title {
+  font-family: var(--font-display);
+  font-size: clamp(36px, 5vw, 56px);
+  font-weight: 800;
+  margin-bottom: 16px;
+}
+
+.subtitle {
+  font-size: 16px;
+  color: var(--muted);
+  max-width: 500px;
+}
+
+/* Experience Cards */
+.experiences {
+  display: flex;
+  flex-direction: column;
+  gap: 32px;
+}
+
+.card {
+  background: var(--card-bg);
+  border: 1px solid var(--card-border);
+  border-radius: 20px;
+  padding: 32px;
+  transition: transform 0.3s, border-color 0.3s, box-shadow 0.3s;
+  animation: slideUp 0.6s ease-out backwards;
+}
+
+.card:hover {
+  transform: translateY(-4px);
+  border-color: var(--card-accent, var(--accent));
+  box-shadow: 0 20px 40px rgba(0, 0, 0, 0.3);
+}
+
+.cardHeader {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  margin-bottom: 28px;
+  padding-bottom: 20px;
+  border-bottom: 1px solid var(--card-border);
+}
+
+.company {
+  font-family: var(--font-display);
+  font-size: 24px;
+  font-weight: 700;
+  margin-bottom: 4px;
+}
+
+.role {
+  color: var(--card-accent, var(--accent));
+  font-size: 14px;
+}
+
+.period {
+  font-size: 13px;
+  color: var(--muted);
+  background: rgba(255,255,255,0.05);
+  padding: 6px 12px;
+  border-radius: 100px;
+}
+
+.cardBody {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+  margin-bottom: 24px;
+}
+
+.section p {
+  font-size: 15px;
+  line-height: 1.7;
+  color: rgba(255,255,255,0.85);
+}
+
+.label {
+  display: block;
+  font-size: 11px;
+  text-transform: uppercase;
+  letter-spacing: 0.15em;
+  color: var(--muted);
+  margin-bottom: 8px;
+}
+
+.impact {
+  color: var(--accent-secondary) !important;
+  font-weight: 500;
+}
+
+.cardFooter {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+
+.tag {
+  font-size: 12px;
+  padding: 6px 14px;
+  background: rgba(255,255,255,0.05);
+  border: 1px solid var(--card-border);
+  border-radius: 100px;
+  color: var(--muted);
+}
+
+/* Footer */
+.footer {
+  position: relative;
+  z-index: 10;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 24px;
+  padding: 48px;
+  border-top: 1px solid var(--card-border);
+  font-size: 16px;
+}
+
+.footerCta {
+  color: var(--accent);
+  font-weight: 600;
+  transition: gap 0.2s;
+  display: inline-flex;
+  gap: 8px;
+}
+
+.footerCta:hover {
+  text-decoration: underline;
+}
+
+/* Animation */
+@keyframes slideUp {
+  from {
+    opacity: 0;
+    transform: translateY(30px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+  /* Navigation styles moved to Navigation component */
+  
+  .main {
+    padding: 32px 20px;
+  }
+  
+  .header {
+    margin-bottom: 40px;
+  }
+  
+  .title {
+    font-size: clamp(28px, 8vw, 36px);
+  }
+  
+  .subtitle {
+    font-size: 15px;
+  }
+  
+  .card {
+    padding: 20px;
+  }
+  
+  .cardHeader {
+    flex-direction: column;
+    gap: 12px;
+    margin-bottom: 20px;
+    padding-bottom: 16px;
+  }
+  
+  .company {
+    font-size: 20px;
+  }
+  
+  .role {
+    font-size: 13px;
+  }
+  
+  .period {
+    font-size: 12px;
+    padding: 5px 10px;
+    align-self: flex-start;
+  }
+  
+  .cardBody {
+    gap: 16px;
+    margin-bottom: 20px;
+  }
+  
+  .section p {
+    font-size: 14px;
+  }
+  
+  .label {
+    font-size: 10px;
+  }
+  
+  .tag {
+    font-size: 11px;
+    padding: 5px 12px;
+  }
+  
+  .footer {
+    flex-direction: column;
+    gap: 16px;
+    padding: 32px 20px;
+    font-size: 15px;
+  }
+}
+
+@media (max-width: 480px) {
+  /* Navigation styles moved to Navigation component */
+  
+  .main {
+    padding: 24px 16px;
+  }
+  
+  .header {
+    margin-bottom: 32px;
+  }
+  
+  .title {
+    font-size: clamp(24px, 10vw, 28px);
+    margin-bottom: 12px;
+  }
+  
+  .subtitle {
+    font-size: 14px;
+  }
+  
+  .experiences {
+    gap: 24px;
+  }
+  
+  .card {
+    padding: 16px;
+  }
+  
+  .cardHeader {
+    margin-bottom: 16px;
+    padding-bottom: 12px;
+  }
+  
+  .company {
+    font-size: 18px;
+  }
+  
+  .cardBody {
+    gap: 14px;
+    margin-bottom: 16px;
+  }
+  
+  .section p {
+    font-size: 13px;
+    line-height: 1.6;
+  }
+  
+  .footer {
+    padding: 24px 16px;
+    font-size: 14px;
+    text-align: center;
+  }
+}
+

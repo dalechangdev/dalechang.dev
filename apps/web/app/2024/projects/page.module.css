@@ -1,0 +1,321 @@
+.page {
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  position: relative;
+}
+
+.bgGrid {
+  position: fixed;
+  inset: 0;
+  background-image: 
+    linear-gradient(rgba(255,255,255,0.02) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(255,255,255,0.02) 1px, transparent 1px);
+  background-size: 60px 60px;
+  pointer-events: none;
+  z-index: 0;
+}
+
+/* Navigation styles moved to Navigation component */
+
+/* Main */
+.main {
+  position: relative;
+  z-index: 10;
+  flex: 1;
+  padding: 60px 48px;
+  max-width: 1200px;
+  margin: 0 auto;
+  width: 100%;
+}
+
+.header {
+  margin-bottom: 60px;
+  animation: slideUp 0.6s ease-out;
+}
+
+.title {
+  font-family: var(--font-display);
+  font-size: clamp(36px, 5vw, 56px);
+  font-weight: 800;
+  margin-bottom: 16px;
+}
+
+.subtitle {
+  font-size: 16px;
+  color: var(--muted);
+  max-width: 500px;
+}
+
+/* Projects Grid */
+.grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(340px, 1fr));
+  gap: 24px;
+}
+
+.card {
+  display: flex;
+  flex-direction: column;
+  background: var(--card-bg);
+  border: 1px solid var(--card-border);
+  border-radius: 20px;
+  padding: 28px;
+  transition: transform 0.3s, border-color 0.3s, box-shadow 0.3s;
+  animation: slideUp 0.6s ease-out backwards;
+  cursor: pointer;
+}
+
+.card:hover {
+  transform: translateY(-6px);
+  border-color: var(--accent);
+  box-shadow: 0 20px 40px rgba(0, 0, 0, 0.3);
+}
+
+.imageContainer {
+  width: 100%;
+  height: 200px;
+  margin-bottom: 16px;
+  border-radius: 12px;
+  overflow: hidden;
+  background: rgba(255, 255, 255, 0.02);
+}
+
+.projectImage {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.projectTitle {
+  font-family: var(--font-display);
+  font-size: 22px;
+  font-weight: 700;
+  margin-bottom: 12px;
+}
+
+.projectDesc {
+  font-size: 14px;
+  line-height: 1.7;
+  color: rgba(255,255,255,0.75);
+  margin-bottom: 16px;
+  flex: 1;
+}
+
+.why {
+  font-size: 13px;
+  color: var(--muted);
+  margin-bottom: 20px;
+  padding: 12px;
+  background: rgba(255,255,255,0.03);
+  border-radius: 8px;
+  line-height: 1.6;
+}
+
+.whyLabel {
+  color: var(--accent-secondary);
+  font-weight: 500;
+}
+
+.tech {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin-bottom: 20px;
+}
+
+.techTag {
+  font-size: 11px;
+  padding: 5px 12px;
+  background: rgba(255, 107, 53, 0.1);
+  border: 1px solid rgba(255, 107, 53, 0.2);
+  border-radius: 100px;
+  color: var(--accent);
+}
+
+.viewLink {
+  font-size: 14px;
+  color: var(--foreground);
+  font-weight: 500;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin-top: auto;
+}
+
+.arrow {
+  transition: transform 0.2s;
+}
+
+.card:hover .arrow {
+  transform: translateX(6px);
+}
+
+/* Footer */
+.footer {
+  position: relative;
+  z-index: 10;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 24px;
+  padding: 48px;
+  border-top: 1px solid var(--card-border);
+  font-size: 16px;
+}
+
+.footerCta {
+  color: var(--accent);
+  font-weight: 600;
+}
+
+.footerCta:hover {
+  text-decoration: underline;
+}
+
+/* Animation */
+@keyframes slideUp {
+  from {
+    opacity: 0;
+    transform: translateY(30px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+  /* Navigation styles moved to Navigation component */
+  
+  .main {
+    padding: 32px 20px;
+  }
+  
+  .header {
+    margin-bottom: 40px;
+  }
+  
+  .title {
+    font-size: clamp(28px, 8vw, 36px);
+  }
+  
+  .subtitle {
+    font-size: 15px;
+  }
+  
+  .grid {
+    grid-template-columns: 1fr;
+    gap: 20px;
+  }
+  
+  .card {
+    padding: 20px;
+  }
+  
+  .imageContainer {
+    height: 160px;
+    margin-bottom: 12px;
+  }
+  
+  .projectTitle {
+    font-size: 20px;
+  }
+  
+  .projectDesc {
+    font-size: 13px;
+  }
+  
+  .why {
+    font-size: 12px;
+    padding: 10px;
+  }
+  
+  .techTag {
+    font-size: 10px;
+    padding: 4px 10px;
+  }
+  
+  .viewLink {
+    font-size: 13px;
+  }
+  
+  .footer {
+    flex-direction: column;
+    gap: 16px;
+    padding: 32px 20px;
+    font-size: 15px;
+    text-align: center;
+  }
+}
+
+@media (max-width: 480px) {
+  /* Navigation styles moved to Navigation component */
+  
+  .main {
+    padding: 24px 16px;
+  }
+  
+  .header {
+    margin-bottom: 32px;
+  }
+  
+  .title {
+    font-size: clamp(24px, 10vw, 28px);
+    margin-bottom: 12px;
+  }
+  
+  .subtitle {
+    font-size: 14px;
+  }
+  
+  .grid {
+    gap: 16px;
+  }
+  
+  .card {
+    padding: 16px;
+  }
+  
+  .imageContainer {
+    height: 140px;
+    margin-bottom: 12px;
+  }
+  
+  .projectTitle {
+    font-size: 18px;
+    margin-bottom: 10px;
+  }
+  
+  .projectDesc {
+    font-size: 12px;
+    margin-bottom: 12px;
+  }
+  
+  .why {
+    font-size: 11px;
+    padding: 8px;
+    margin-bottom: 16px;
+  }
+  
+  .tech {
+    gap: 6px;
+    margin-bottom: 16px;
+  }
+  
+  .techTag {
+    font-size: 10px;
+    padding: 4px 8px;
+  }
+  
+  .viewLink {
+    font-size: 12px;
+  }
+  
+  .footer {
+    padding: 24px 16px;
+    font-size: 14px;
+  }
+}
+

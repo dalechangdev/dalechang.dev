@@ -1,0 +1,508 @@
+.page {
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  position: relative;
+}
+
+.bgGrid {
+  position: fixed;
+  inset: 0;
+  background-image: 
+    linear-gradient(rgba(255,255,255,0.02) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(255,255,255,0.02) 1px, transparent 1px);
+  background-size: 60px 60px;
+  pointer-events: none;
+  z-index: 0;
+}
+
+/* Navigation styles moved to Navigation component */
+
+/* Main */
+.main {
+  position: relative;
+  z-index: 10;
+  flex: 1;
+  display: flex;
+  justify-content: center;
+  padding: 60px 48px 80px;
+}
+
+.content {
+  max-width: 640px;
+  animation: slideUp 0.6s ease-out;
+}
+
+.avatarWrapper {
+  width: 200px;
+  height: 200px;
+  border-radius: 50%;
+  overflow: hidden;
+  margin: 0 auto 24px;
+  border: 3px solid var(--card-border);
+  background: var(--card-bg);
+  position: relative;
+}
+
+.avatar {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+}
+
+.title {
+  font-family: var(--font-display);
+  font-size: clamp(36px, 5vw, 52px);
+  font-weight: 800;
+  margin-bottom: 32px;
+}
+
+.bio {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+  margin-bottom: 48px;
+}
+
+.bio p {
+  font-size: 17px;
+  line-height: 1.8;
+  color: rgba(255,255,255,0.8);
+}
+
+/* Values */
+.values {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+  margin-bottom: 64px;
+  padding: 32px;
+  background: var(--card-bg);
+  border: 1px solid var(--card-border);
+  border-radius: 20px;
+}
+
+.value {
+  display: flex;
+  gap: 16px;
+  align-items: flex-start;
+}
+
+.valueIcon {
+  font-size: 24px;
+  flex-shrink: 0;
+}
+
+.value h3 {
+  font-family: var(--font-display);
+  font-size: 16px;
+  font-weight: 700;
+  margin-bottom: 4px;
+}
+
+.value p {
+  font-size: 14px;
+  color: var(--muted);
+}
+
+/* CTA */
+.cta {
+  text-align: center;
+  padding: 48px;
+  background: linear-gradient(135deg, rgba(255, 107, 53, 0.1) 0%, rgba(0, 212, 170, 0.1) 100%);
+  border: 1px solid var(--card-border);
+  border-radius: 24px;
+  margin-bottom: 48px;
+}
+
+.cta h2 {
+  font-family: var(--font-display);
+  font-size: 28px;
+  font-weight: 700;
+  margin-bottom: 12px;
+}
+
+.cta p {
+  font-size: 15px;
+  color: var(--muted);
+  margin-bottom: 28px;
+  max-width: 400px;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+.ctaBtn {
+  display: inline-flex;
+  align-items: center;
+  gap: 12px;
+  background: var(--accent);
+  color: var(--background);
+  padding: 16px 32px;
+  border-radius: 100px;
+  font-family: var(--font-display);
+  font-weight: 600;
+  font-size: 16px;
+  transition: transform 0.2s, box-shadow 0.2s, gap 0.2s;
+}
+
+.ctaBtn:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 12px 32px rgba(255, 107, 53, 0.3);
+  gap: 20px;
+}
+
+.arrow {
+  transition: transform 0.2s;
+}
+
+.ctaBtn:hover .arrow {
+  transform: translateX(4px);
+}
+
+/* Coffee */
+.coffee {
+  margin-bottom: 64px;
+  position: relative;
+  padding: 64px 0;
+}
+
+.coffee::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 100vw;
+  height: 100%;
+  background: linear-gradient(
+    135deg,
+    rgba(255, 107, 53, 0.08) 0%,
+    rgba(0, 212, 170, 0.08) 50%,
+    rgba(255, 107, 53, 0.08) 100%
+  );
+  background-size: 200% 200%;
+  animation: gradient 8s ease infinite;
+  z-index: -1;
+}
+
+.coffeeContent {
+  display: flex;
+  align-items: center;
+  gap: 64px;
+  justify-content: space-between;
+}
+
+.coffeeText {
+  flex: 1;
+  max-width: 400px;
+}
+
+.coffee h2 {
+  font-family: var(--font-display);
+  font-size: 32px;
+  font-weight: 700;
+  margin-bottom: 16px;
+  background: linear-gradient(135deg, var(--accent) 0%, var(--accent-secondary) 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+.coffee p {
+  font-size: 16px;
+  color: rgba(255, 255, 255, 0.7);
+  margin-bottom: 32px;
+  line-height: 1.7;
+}
+
+.coffeeLink {
+  display: block;
+  flex-shrink: 0;
+  transition: transform 0.3s ease;
+}
+
+.coffeeLink:hover {
+  transform: scale(1.05) rotate(2deg);
+}
+
+.coffeeQr {
+  border-radius: 16px;
+  filter: drop-shadow(0 8px 32px rgba(255, 107, 53, 0.2));
+  transition: filter 0.3s ease;
+}
+
+.coffeeLink:hover .coffeeQr {
+  filter: drop-shadow(0 12px 40px rgba(255, 107, 53, 0.4));
+}
+
+.coffeeBtn {
+  display: inline-flex;
+  align-items: center;
+  gap: 12px;
+  background: linear-gradient(135deg, var(--accent) 0%, var(--accent-secondary) 100%);
+  color: var(--background);
+  padding: 16px 32px;
+  border-radius: 100px;
+  font-family: var(--font-display);
+  font-weight: 600;
+  font-size: 16px;
+  transition: transform 0.2s, box-shadow 0.2s, gap 0.2s;
+  box-shadow: 0 4px 16px rgba(255, 107, 53, 0.3);
+}
+
+.coffeeBtn:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 12px 32px rgba(255, 107, 53, 0.4);
+  gap: 20px;
+}
+
+.coffeeBtn:hover .arrow {
+  transform: translateX(4px);
+}
+
+/* Socials */
+.socials {
+  display: flex;
+  justify-content: center;
+  gap: 32px;
+  font-size: 14px;
+}
+
+.socials a {
+  opacity: 0.6;
+  transition: opacity 0.2s, color 0.2s;
+}
+
+.socials a:hover {
+  opacity: 1;
+  color: var(--accent);
+}
+
+/* Animation */
+@keyframes slideUp {
+  from {
+    opacity: 0;
+    transform: translateY(30px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+  /* Navigation styles moved to Navigation component */
+  
+  .main {
+    padding: 32px 20px 48px;
+  }
+  
+  .avatarWrapper {
+    width: 160px;
+    height: 160px;
+    margin-bottom: 20px;
+  }
+  
+  .title {
+    font-size: clamp(28px, 8vw, 36px);
+    margin-bottom: 24px;
+  }
+  
+  .bio {
+    gap: 16px;
+    margin-bottom: 32px;
+  }
+  
+  .bio p {
+    font-size: 15px;
+  }
+  
+  .values {
+    padding: 20px;
+    margin-bottom: 40px;
+    gap: 16px;
+  }
+  
+  .valueIcon {
+    font-size: 20px;
+  }
+  
+  .value h3 {
+    font-size: 15px;
+  }
+  
+  .value p {
+    font-size: 13px;
+  }
+  
+  .cta {
+    padding: 28px 20px;
+    margin-bottom: 32px;
+  }
+  
+  .cta h2 {
+    font-size: 24px;
+  }
+  
+  .cta p {
+    font-size: 14px;
+    margin-bottom: 24px;
+  }
+  
+  .ctaBtn {
+    padding: 14px 28px;
+    font-size: 15px;
+  }
+  
+  .coffee {
+    padding: 48px 0;
+    margin-bottom: 48px;
+  }
+  
+  .coffeeContent {
+    flex-direction: column;
+    text-align: center;
+    gap: 40px;
+  }
+  
+  .coffeeText {
+    max-width: 100%;
+  }
+  
+  .coffee h2 {
+    font-size: 28px;
+  }
+  
+  .coffee p {
+    font-size: 15px;
+    margin-bottom: 28px;
+  }
+  
+  .coffeeQr {
+    width: 200px;
+    height: 200px;
+  }
+  
+  .coffeeBtn {
+    padding: 14px 28px;
+    font-size: 15px;
+  }
+  
+  .socials {
+    gap: 24px;
+    font-size: 13px;
+  }
+}
+
+@media (max-width: 480px) {
+  /* Navigation styles moved to Navigation component */
+  
+  .main {
+    padding: 24px 16px 40px;
+  }
+  
+  .avatarWrapper {
+    width: 140px;
+    height: 140px;
+    margin-bottom: 16px;
+  }
+  
+  .title {
+    font-size: clamp(24px, 10vw, 28px);
+    margin-bottom: 20px;
+  }
+  
+  .bio {
+    gap: 14px;
+    margin-bottom: 28px;
+  }
+  
+  .bio p {
+    font-size: 14px;
+    line-height: 1.7;
+  }
+  
+  .values {
+    padding: 16px;
+    margin-bottom: 32px;
+    gap: 14px;
+  }
+  
+  .value {
+    gap: 12px;
+  }
+  
+  .valueIcon {
+    font-size: 18px;
+  }
+  
+  .value h3 {
+    font-size: 14px;
+  }
+  
+  .value p {
+    font-size: 12px;
+  }
+  
+  .cta {
+    padding: 24px 16px;
+    margin-bottom: 28px;
+  }
+  
+  .cta h2 {
+    font-size: 20px;
+    margin-bottom: 10px;
+  }
+  
+  .cta p {
+    font-size: 13px;
+    margin-bottom: 20px;
+  }
+  
+  .ctaBtn {
+    padding: 12px 24px;
+    font-size: 14px;
+    width: 100%;
+    justify-content: center;
+  }
+  
+  .coffee {
+    padding: 40px 0;
+    margin-bottom: 40px;
+  }
+  
+  .coffeeContent {
+    gap: 32px;
+  }
+  
+  .coffee h2 {
+    font-size: 24px;
+    margin-bottom: 12px;
+  }
+  
+  .coffee p {
+    font-size: 14px;
+    margin-bottom: 24px;
+  }
+  
+  .coffeeQr {
+    width: 180px;
+    height: 180px;
+  }
+  
+  .coffeeBtn {
+    padding: 12px 24px;
+    font-size: 14px;
+    width: 100%;
+    justify-content: center;
+  }
+  
+  .socials {
+    gap: 20px;
+    font-size: 12px;
+    flex-wrap: wrap;
+  }
+}
+
