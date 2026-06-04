@@ -1,4 +1,5 @@
 import type { Metadata } from "next";
+import "./theme-2024.css";
 
 export const metadata: Metadata = {
   title: "Dale Chang | Product-Minded Engineer (2024)",
@@ -10,5 +11,5 @@ export default function Layout2024({
 }: Readonly<{
   children: React.ReactNode;
 }>) {
-  return children;
+  return <div className="theme-2024">{children}</div>;
 }
