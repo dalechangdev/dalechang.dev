@@ -8,8 +8,10 @@ export interface GameMap {
   spawnRow: number;
 }
 
-const COLS = 22;
-const ROWS = 16;
+// Matches the on-screen viewport (VIEW_COLS x VIEW_ROWS in GameWorld), so the
+// whole island fits on one screen with no camera scroll.
+const COLS = 16;
+const ROWS = 12;
 
 // Deterministic 0..1 noise so the island's coastline is irregular but stable.
 function noise(x: number, y: number): number {
@@ -35,8 +37,9 @@ export function buildMap(): GameMap {
       const dy = (row - cy + 0.5) / (ROWS / 2);
       const d = Math.sqrt(dx * dx + dy * dy) + (noise(col, row) - 0.5) * 0.16;
 
-      if (d > 0.92) line.push(Tile.WATER);
-      else if (d > 0.78) line.push(Tile.SAND);
+      // Tightened so a water border rings the island on every side.
+      if (d > 0.88) line.push(Tile.WATER);
+      else if (d > 0.72) line.push(Tile.SAND);
       else line.push(Tile.GRASS);
     }
     grid.push(line);
@@ -61,8 +64,8 @@ export function buildMap(): GameMap {
       if (Math.abs(col - spawnCol) <= 2 && Math.abs(row - spawnRow) <= 2)
         continue;
       const n = noise(col + 100, row + 100);
-      if (n > 0.93) grid[row]![col] = Tile.TREE;
-      else if (n > 0.88) grid[row]![col] = Tile.BUSH;
+      if (n > 0.82) grid[row]![col] = Tile.TREE;
+      else if (n > 0.68) grid[row]![col] = Tile.BUSH;
     }
   }
 
