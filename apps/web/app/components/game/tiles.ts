@@ -1,4 +1,4 @@
-import { DMG } from "./palette";
+import { C } from "./palette";
 
 // Pixel size of one tile, in the canvas's internal (pre-scale) resolution.
 export const TILE = 16;
@@ -50,19 +50,18 @@ function drawGrass(
   col: number,
   row: number,
 ): void {
-  // Base "cut grass" mow pattern: a subtle two-tone checker of the two
-  // lightest greens.
-  px(ctx, sx, sy, TILE, TILE, DMG.light);
-  px(ctx, sx, sy, TILE / 2, TILE / 2, DMG.lightest);
-  px(ctx, sx + TILE / 2, sy + TILE / 2, TILE / 2, TILE / 2, DMG.lightest);
+  // Base "cut grass" mow pattern: a subtle two-tone checker of greens.
+  px(ctx, sx, sy, TILE, TILE, C.grassMid);
+  px(ctx, sx, sy, TILE / 2, TILE / 2, C.grassLight);
+  px(ctx, sx + TILE / 2, sy + TILE / 2, TILE / 2, TILE / 2, C.grassLight);
 
   // A couple of deterministic blade flecks for texture.
   if (hash(col, row) > 0.55) {
-    px(ctx, sx + 3, sy + 10, 1, 2, DMG.dark);
-    px(ctx, sx + 4, sy + 11, 1, 1, DMG.dark);
+    px(ctx, sx + 3, sy + 10, 1, 2, C.grassDark);
+    px(ctx, sx + 4, sy + 11, 1, 1, C.grassDark);
   }
   if (hash(col + 7, row + 3) > 0.6) {
-    px(ctx, sx + 11, sy + 4, 1, 2, DMG.dark);
+    px(ctx, sx + 11, sy + 4, 1, 2, C.grassHi);
   }
 }
 
@@ -73,16 +72,18 @@ function drawSand(
   col: number,
   row: number,
 ): void {
-  px(ctx, sx, sy, TILE, TILE, DMG.lightest);
+  px(ctx, sx, sy, TILE, TILE, C.sandMid);
+  px(ctx, sx, sy, TILE / 2, TILE / 2, C.sandLight);
+  px(ctx, sx + TILE / 2, sy + TILE / 2, TILE / 2, TILE / 2, C.sandLight);
   // Sparse darker speckle for a beach-y grain.
-  if (hash(col + 1, row) > 0.5) px(ctx, sx + 4, sy + 6, 1, 1, DMG.light);
-  if (hash(col, row + 5) > 0.5) px(ctx, sx + 10, sy + 11, 1, 1, DMG.light);
-  if (hash(col + 3, row + 2) > 0.7) px(ctx, sx + 7, sy + 3, 1, 1, DMG.light);
+  if (hash(col + 1, row) > 0.5) px(ctx, sx + 4, sy + 6, 1, 1, C.sandDark);
+  if (hash(col, row + 5) > 0.5) px(ctx, sx + 10, sy + 11, 1, 1, C.sandDark);
+  if (hash(col + 3, row + 2) > 0.7) px(ctx, sx + 7, sy + 3, 1, 1, C.sandDark);
 }
 
 function drawPath(ctx: CanvasRenderingContext2D, sx: number, sy: number): void {
   // Dark mortar background with four light cobbles.
-  px(ctx, sx, sy, TILE, TILE, DMG.dark);
+  px(ctx, sx, sy, TILE, TILE, C.mortar);
   const blocks: [number, number][] = [
     [1, 1],
     [9, 1],
@@ -90,8 +91,9 @@ function drawPath(ctx: CanvasRenderingContext2D, sx: number, sy: number): void {
     [9, 9],
   ];
   for (const [bx, by] of blocks) {
-    px(ctx, sx + bx, sy + by, 6, 6, DMG.light);
-    px(ctx, sx + bx, sy + by, 6, 1, DMG.lightest); // top highlight
+    px(ctx, sx + bx, sy + by, 6, 6, C.stoneMid);
+    px(ctx, sx + bx, sy + by, 6, 1, C.stoneLight); // top highlight
+    px(ctx, sx + bx, sy + by + 5, 6, 1, C.stoneDark); // bottom shade
   }
 }
 
@@ -103,15 +105,15 @@ function drawWater(
   row: number,
   time: number,
 ): void {
-  px(ctx, sx, sy, TILE, TILE, DMG.dark);
-  px(ctx, sx, sy, TILE, TILE / 2, DMG.darkest); // depth band on top half
+  px(ctx, sx, sy, TILE, TILE, C.waterMid);
+  px(ctx, sx, sy, TILE, TILE / 2, C.waterDeep); // depth band on top half
 
   // Two animated ripple dashes that drift sideways over time.
   const shift = Math.floor(time / 320);
   const a = ((col * 5 + shift) % TILE) | 0;
   const b = ((col * 5 + shift + 8) % TILE) | 0;
-  px(ctx, sx + a, sy + 4, 3, 1, DMG.light);
-  if (hash(col, row) > 0.4) px(ctx, sx + b, sy + 11, 3, 1, DMG.light);
+  px(ctx, sx + a, sy + 4, 3, 1, C.waterFoam);
+  if (hash(col, row) > 0.4) px(ctx, sx + b, sy + 11, 3, 1, C.waterLight);
 }
 
 function drawTree(
@@ -123,13 +125,13 @@ function drawTree(
 ): void {
   drawGrass(ctx, sx, sy, col, row);
   // Trunk.
-  px(ctx, sx + 7, sy + 11, 2, 4, DMG.dark);
-  px(ctx, sx + 7, sy + 11, 2, 4, DMG.darkest);
-  // Canopy: a dark blob with a darkest outline and a light highlight.
-  px(ctx, sx + 3, sy + 1, 10, 11, DMG.darkest);
-  px(ctx, sx + 4, sy + 2, 8, 9, DMG.dark);
-  px(ctx, sx + 5, sy + 3, 3, 2, DMG.light); // highlight
-  px(ctx, sx + 9, sy + 6, 2, 2, DMG.light);
+  px(ctx, sx + 7, sy + 11, 2, 4, C.trunk);
+  px(ctx, sx + 7, sy + 11, 1, 4, C.trunkDark);
+  // Canopy: a leafy blob with a dark outline and a light highlight.
+  px(ctx, sx + 3, sy + 1, 10, 11, C.leafDark);
+  px(ctx, sx + 4, sy + 2, 8, 9, C.leafMid);
+  px(ctx, sx + 5, sy + 3, 3, 2, C.leafHi); // highlight
+  px(ctx, sx + 9, sy + 6, 2, 2, C.leafHi);
 }
 
 function drawBush(
@@ -140,10 +142,10 @@ function drawBush(
   row: number,
 ): void {
   drawGrass(ctx, sx, sy, col, row);
-  px(ctx, sx + 2, sy + 5, 12, 8, DMG.darkest);
-  px(ctx, sx + 3, sy + 6, 10, 6, DMG.dark);
-  px(ctx, sx + 4, sy + 7, 2, 1, DMG.light);
-  px(ctx, sx + 9, sy + 8, 2, 1, DMG.light);
+  px(ctx, sx + 2, sy + 5, 12, 8, C.leafDark);
+  px(ctx, sx + 3, sy + 6, 10, 6, C.leafMid);
+  px(ctx, sx + 4, sy + 7, 2, 1, C.leafHi);
+  px(ctx, sx + 9, sy + 8, 2, 1, C.leafHi);
 }
 
 // Paint a single tile at screen position (sx, sy). `col`/`row` are the tile's

@@ -8,8 +8,8 @@ export interface GameMap {
   spawnRow: number;
 }
 
-const COLS = 40;
-const ROWS = 28;
+const COLS = 22;
+const ROWS = 16;
 
 // Deterministic 0..1 noise so the island's coastline is irregular but stable.
 function noise(x: number, y: number): number {

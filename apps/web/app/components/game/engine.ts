@@ -1,4 +1,4 @@
-import { DMG } from "./palette";
+import { C } from "./palette";
 import { drawPlayer, SPRITE_W } from "./sprite";
 import { isSolid, drawTile, Tile, TILE } from "./tiles";
 import type { GameMap } from "./map";
@@ -139,7 +139,7 @@ export function createGame(map: GameMap): Game {
     );
 
     // Fill with deep water first (covers any area outside the map bounds).
-    ctx.fillStyle = DMG.dark;
+    ctx.fillStyle = C.waterMid;
     ctx.fillRect(0, 0, viewW, viewH);
 
     const c0 = Math.floor(camX / TILE);

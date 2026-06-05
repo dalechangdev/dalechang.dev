@@ -5,7 +5,7 @@
   align-items: center;
   justify-content: center;
   overflow: hidden;
-  background: #081008; /* dark letterbox around the screen */
+  background: #0c1822; /* deep water letterbox around the screen */
   touch-action: none;
   user-select: none;
 }
@@ -14,10 +14,10 @@
   display: block;
   image-rendering: pixelated;
   image-rendering: crisp-edges;
-  /* A faint glow + border evokes a handheld LCD screen. */
+  /* A faint glow + border frames the screen. */
   box-shadow:
-    0 0 0 4px #0f380f,
-    0 0 40px rgba(155, 188, 15, 0.25);
+    0 0 0 4px #1e5a99,
+    0 0 40px rgba(74, 159, 216, 0.3);
 }
 
 .hud,
@@ -28,8 +28,8 @@
   font-family: var(--font-mono);
   text-transform: uppercase;
   letter-spacing: 0.25em;
-  color: #9bbc0f;
-  text-shadow: 0 2px 0 #0f380f;
+  color: #f4ecc8;
+  text-shadow: 0 2px 0 #1f3a2a;
   pointer-events: none;
   z-index: 2;
 }
@@ -66,8 +66,8 @@
 
   .dpad button {
     border: none;
-    background: rgba(15, 56, 15, 0.78);
-    color: #9bbc0f;
+    background: rgba(30, 90, 153, 0.8);
+    color: #f4ecc8;
     font-size: 20px;
     border-radius: 8px;
     display: flex;
@@ -77,7 +77,7 @@
   }
 
   .dpad button:active {
-    background: rgba(48, 98, 48, 0.95);
+    background: rgba(74, 159, 216, 0.95);
   }
 
   .up {
