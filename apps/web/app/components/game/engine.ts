@@ -1,10 +1,30 @@
 import { C } from "./palette";
+import menuData from "./menu.json";
 import { drawPlayer, SPRITE_W } from "./sprite";
 import { isSolid, drawTile, Tile, TILE } from "./tiles";
 import type { GameMap } from "./map";
 
 // 0=down 1=up 2=left 3=right
 export type Dir = 0 | 1 | 2 | 3;
+
+// Pokemon-style pause menu, driven by menu.json. `id` decides behavior;
+// `label` is what the player sees.
+export interface MenuOption {
+  id: string;
+  label: string;
+}
+
+export interface MenuState {
+  open: boolean;
+  index: number;
+  options: MenuOption[];
+}
+
+const MENU_OPTIONS: MenuOption[] = menuData.options;
+
+// Keys that move the menu pointer (with wrap-around).
+const MENU_UP = new Set(["ArrowUp", "KeyW"]);
+const MENU_DOWN = new Set(["ArrowDown", "KeyS"]);
 
 const DELTAS: Record<Dir, [number, number]> = {
   0: [0, 1],
@@ -35,11 +55,18 @@ const clamp = (v: number, lo: number, hi: number): number =>
 
 export interface Game {
   setDirHeld(dir: Dir, held: boolean): void;
+  // Returns true when the key was consumed by the game (so the caller can
+  // preventDefault). `repeat` is the KeyboardEvent.repeat flag.
+  keyDown(code: string, repeat: boolean): boolean;
+  keyUp(code: string): void;
   update(dtMs: number): void;
   render(ctx: CanvasRenderingContext2D, viewW: number, viewH: number, time: number): void;
 }
 
-export function createGame(map: GameMap): Game {
+export function createGame(
+  map: GameMap,
+  onMenuChange?: (state: MenuState) => void,
+): Game {
   const player = {
     col: map.spawnCol,
     row: map.spawnRow,
@@ -61,6 +88,8 @@ export function createGame(map: GameMap): Game {
   // controls feel responsive when two keys overlap.
   const held: Dir[] = [];
 
+  const menu = { open: false, index: 0 };
+
   const walkable = (c: number, r: number): boolean =>
     r >= 0 &&
     r < map.rows &&
@@ -69,12 +98,81 @@ export function createGame(map: GameMap): Game {
     !isSolid(map.grid[r]![c]!);
 
   const setDirHeld = (dir: Dir, isHeld: boolean): void => {
+    // Ignore new movement input while the menu is open (releases still apply,
+    // so keys never get stuck).
+    if (isHeld && menu.open) return;
     const i = held.indexOf(dir);
     if (isHeld) {
       if (i < 0) held.push(dir);
     } else if (i >= 0) {
       held.splice(i, 1);
     }
+  };
+
+  const emitMenu = (): void =>
+    onMenuChange?.({
+      open: menu.open,
+      index: menu.index,
+      options: MENU_OPTIONS,
+    });
+
+  const openMenu = (): void => {
+    menu.open = true;
+    menu.index = 0;
+    held.length = 0; // stop walking when the menu pops up
+    emitMenu();
+  };
+
+  const closeMenu = (): void => {
+    menu.open = false;
+    emitMenu();
+  };
+
+  // Spacebar confirms the highlighted option. Only "close" does anything for
+  // now; every other option is a no-op, per spec.
+  const confirm = (): void => {
+    if (MENU_OPTIONS[menu.index]?.id === "close") closeMenu();
+  };
+
+  const keyDown = (code: string, repeat: boolean): boolean => {
+    if (menu.open) {
+      if (code === "Enter" || code === "KeyB") {
+        if (!repeat) closeMenu();
+        return true;
+      }
+      if (MENU_UP.has(code)) {
+        menu.index = (menu.index - 1 + MENU_OPTIONS.length) % MENU_OPTIONS.length;
+        emitMenu();
+        return true;
+      }
+      if (MENU_DOWN.has(code)) {
+        menu.index = (menu.index + 1) % MENU_OPTIONS.length;
+        emitMenu();
+        return true;
+      }
+      if (code === "Space") {
+        if (!repeat) confirm();
+        return true;
+      }
+      // Swallow remaining movement keys so they don't scroll or leak through.
+      return code in KEY_TO_DIR;
+    }
+
+    if (code === "Enter") {
+      if (!repeat) openMenu();
+      return true;
+    }
+    const dir = KEY_TO_DIR[code];
+    if (dir !== undefined) {
+      if (!repeat) setDirHeld(dir, true);
+      return true;
+    }
+    return false;
+  };
+
+  const keyUp = (code: string): void => {
+    const dir = KEY_TO_DIR[code];
+    if (dir !== undefined) setDirHeld(dir, false);
   };
 
   const update = (dtMs: number): void => {
@@ -168,5 +266,5 @@ export function createGame(map: GameMap): Game {
     );
   };
 
-  return { setDirHeld, update, render };
+  return { setDirHeld, keyDown, keyUp, update, render };
 }

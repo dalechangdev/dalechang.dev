@@ -1,9 +1,9 @@
 "use client";
 
-import { useEffect, useRef } from "react";
+import { useEffect, useRef, useState } from "react";
 import styles from "./GameWorld.module.css";
 import { buildMap } from "./map";
-import { createGame, KEY_TO_DIR, type Dir } from "./engine";
+import { createGame, type Dir, type MenuState } from "./engine";
 import { TILE } from "./tiles";
 
 // Internal (pre-scale) viewport, in tiles. The canvas renders at this small
@@ -18,6 +18,12 @@ export default function GameWorld() {
   const canvasRef = useRef<HTMLCanvasElement>(null);
   // Imperative handle the touch D-pad uses to drive the game.
   const setDirRef = useRef<((dir: Dir, held: boolean) => void) | null>(null);
+  // The engine pushes menu changes here so we can render the menu as crisp DOM.
+  const [menu, setMenu] = useState<MenuState>({
+    open: false,
+    index: 0,
+    options: [],
+  });
 
   useEffect(() => {
     const canvas = canvasRef.current;
@@ -29,7 +35,7 @@ export default function GameWorld() {
     canvas.height = VIEW_H;
     ctx.imageSmoothingEnabled = false;
 
-    const game = createGame(buildMap());
+    const game = createGame(buildMap(), setMenu);
     setDirRef.current = game.setDirHeld;
 
     // Scale the canvas up by the largest integer factor that fits the window.
@@ -45,15 +51,11 @@ export default function GameWorld() {
     window.addEventListener("resize", fitToWindow);
 
     const onKeyDown = (e: KeyboardEvent): void => {
-      const dir = KEY_TO_DIR[e.code];
-      if (dir === undefined) return;
-      e.preventDefault(); // stop arrow keys from scrolling the page
-      if (!e.repeat) game.setDirHeld(dir, true);
+      // The engine decides whether the key drives the player or the menu.
+      if (game.keyDown(e.code, e.repeat)) e.preventDefault();
     };
     const onKeyUp = (e: KeyboardEvent): void => {
-      const dir = KEY_TO_DIR[e.code];
-      if (dir === undefined) return;
-      game.setDirHeld(dir, false);
+      game.keyUp(e.code);
     };
     window.addEventListener("keydown", onKeyDown);
     window.addEventListener("keyup", onKeyUp);
@@ -95,7 +97,23 @@ export default function GameWorld() {
 
       <canvas ref={canvasRef} className={styles.canvas} />
 
-      <p className={styles.hint}>WASD / arrow keys to move</p>
+      {menu.open && (
+        <div className={styles.menu} role="menu">
+          {menu.options.map((opt, i) => (
+            <div
+              key={opt.id}
+              className={`${styles.menuItem} ${i === menu.index ? styles.menuItemActive : ""}`}
+              role="menuitem"
+              aria-current={i === menu.index}
+            >
+              <span className={styles.menuPointer}>{i === menu.index ? "▶" : ""}</span>
+              {opt.label}
+            </div>
+          ))}
+        </div>
+      )}
+
+      <p className={styles.hint}>WASD / arrows to move · Enter for menu</p>
 
       <div className={styles.dpad} aria-hidden="true">
         <button className={styles.up} {...dpadProps(1)}>

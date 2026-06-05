@@ -1,0 +1,7 @@
+{
+  "options": [
+    { "id": "inventory", "label": "Inventory" },
+    { "id": "2024", "label": "2024" },
+    { "id": "close", "label": "Close" }
+  ]
+}

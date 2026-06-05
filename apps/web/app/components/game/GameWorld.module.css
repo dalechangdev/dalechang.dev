@@ -46,6 +46,48 @@
   opacity: 0.7;
 }
 
+/* Pokemon-style pause menu, overlaid on the game screen. */
+.menu {
+  position: absolute;
+  top: 24px;
+  right: 24px;
+  min-width: 168px;
+  padding: 14px 16px 14px 12px;
+  background: #f7f7ee;
+  color: #20302a;
+  border: 3px solid #20302a;
+  border-radius: 7px;
+  /* Double-line frame look + drop shadow, like a GameBoy text box. */
+  box-shadow:
+    inset 0 0 0 2px #f7f7ee,
+    inset 0 0 0 4px #20302a,
+    0 6px 0 rgba(0, 0, 0, 0.35);
+  font-family: var(--font-mono);
+  z-index: 5;
+}
+
+.menuItem {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 4px 4px 4px 0;
+  font-size: 15px;
+  font-weight: 700;
+  letter-spacing: 0.06em;
+  white-space: nowrap;
+}
+
+.menuPointer {
+  display: inline-block;
+  width: 14px;
+  font-size: 11px;
+  color: #20302a;
+}
+
+.menuItemActive {
+  color: #1f7a26;
+}
+
 /* Touch D-pad — only shown on coarse-pointer (touch) devices. */
 .dpad {
   display: none;
