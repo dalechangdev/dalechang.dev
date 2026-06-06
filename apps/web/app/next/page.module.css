@@ -1,45 +1,412 @@
 .page {
   min-height: 100vh;
   display: flex;
-  align-items: center;
-  justify-content: center;
+  flex-direction: column;
   position: relative;
   overflow: hidden;
   background: var(--background);
+  color: var(--foreground);
 }
 
-.content {
-  text-align: center;
-  padding: 48px 24px;
+/* Diamond grid — Zelda HUD aesthetic */
+.bgGrid {
+  position: fixed;
+  inset: 0;
+  background-image:
+    linear-gradient(45deg, rgba(0, 229, 102, 0.025) 1px, transparent 1px),
+    linear-gradient(-45deg, rgba(0, 229, 102, 0.025) 1px, transparent 1px);
+  background-size: 48px 48px;
+  pointer-events: none;
+  z-index: 0;
+}
+
+/* Rupee green ambient glow */
+.bgGlow {
+  position: fixed;
+  top: -20%;
+  right: -10%;
+  width: 60%;
+  height: 70%;
+  background: radial-gradient(ellipse, rgba(0, 229, 102, 0.07) 0%, transparent 65%);
+  pointer-events: none;
+  z-index: 0;
+}
+
+/* Hero */
+.hero {
   position: relative;
   z-index: 10;
+  flex: 1;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 64px;
+  align-items: center;
+  padding: 80px 48px;
+  max-width: 1400px;
+  margin: 0 auto;
+  width: 100%;
 }
 
-.label {
-  font-size: 12px;
+.heroContent {
+  animation: slideUp 0.8s ease-out;
+}
+
+.heroLabel {
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  font-size: 11px;
+  color: var(--accent);
+  margin-bottom: 24px;
   text-transform: uppercase;
-  letter-spacing: 0.15em;
-  color: var(--muted);
-  margin-bottom: 24px;
+  letter-spacing: 0.2em;
+  font-family: var(--font-display);
 }
 
-.title {
+/* Hexagonal rupee gem shape */
+.rupeeGem {
+  display: inline-block;
+  flex-shrink: 0;
+  width: 10px;
+  height: 14px;
+  clip-path: polygon(50% 0%, 100% 25%, 100% 75%, 50% 100%, 0% 75%, 0% 25%);
+  background: var(--accent);
+  animation: rupeeGlow 2.5s ease-in-out infinite;
+}
+
+/* Larger colored rupee gems for floating cards */
+.rupeeGemGreen {
+  width: 16px;
+  height: 22px;
+  background: linear-gradient(160deg, #7fffb8 0%, var(--accent) 45%, #006e30 100%);
+  animation-delay: 0s;
+}
+
+.rupeeGemBlue {
+  width: 16px;
+  height: 22px;
+  background: linear-gradient(160deg, #66ccff 0%, var(--accent-blue) 45%, #003d7a 100%);
+  animation-delay: 0.8s;
+}
+
+.rupeeGemGold {
+  width: 16px;
+  height: 22px;
+  background: linear-gradient(160deg, #fff380 0%, var(--accent-gold) 45%, #8a6800 100%);
+  animation-delay: 1.6s;
+}
+
+.heroTitle {
   font-family: var(--font-display);
-  font-size: clamp(48px, 8vw, 96px);
-  font-weight: 800;
-  line-height: 1.05;
-  letter-spacing: -0.02em;
+  font-size: clamp(44px, 6.5vw, 76px);
+  font-weight: 700;
+  line-height: 1.1;
   margin-bottom: 24px;
-  background: linear-gradient(135deg, var(--foreground) 0%, var(--muted) 100%);
+  letter-spacing: 0.02em;
+}
+
+/* Green-to-gold gradient — like collecting a rare rupee */
+.heroAccent {
+  background: linear-gradient(135deg, var(--accent) 0%, var(--accent-gold) 100%);
+  background-size: 200% 200%;
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
   background-clip: text;
+  animation: gradient 5s ease infinite;
 }
 
-.sub {
-  font-size: 16px;
+.heroSub {
+  font-size: 15px;
   color: var(--muted);
-  max-width: 400px;
-  margin: 0 auto;
+  max-width: 480px;
+  margin-bottom: 40px;
   line-height: 1.8;
+}
+
+.heroCtas {
+  display: flex;
+  gap: 16px;
+  flex-wrap: wrap;
+}
+
+/* Octagonal gem-cut button — rupee facet shape */
+.primaryBtn {
+  display: inline-flex;
+  align-items: center;
+  gap: 12px;
+  background: var(--accent);
+  color: var(--background);
+  padding: 16px 36px;
+  clip-path: polygon(14px 0%, calc(100% - 14px) 0%, 100% 14px, 100% calc(100% - 14px), calc(100% - 14px) 100%, 14px 100%, 0% calc(100% - 14px), 0% 14px);
+  font-family: var(--font-display);
+  font-weight: 700;
+  font-size: 13px;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  transition: filter 0.25s, transform 0.25s, gap 0.25s;
+}
+
+.primaryBtn:hover {
+  filter: brightness(1.15) drop-shadow(0 0 20px rgba(0, 229, 102, 0.75));
+  transform: translateY(-3px);
+  gap: 18px;
+}
+
+.btnArrow {
+  display: inline-block;
+  transition: transform 0.25s;
+}
+
+.primaryBtn:hover .btnArrow {
+  transform: translateX(4px);
+}
+
+/* Secondary: same gem cut, dark fill, glow on hover */
+.secondaryBtn {
+  display: inline-flex;
+  align-items: center;
+  padding: 16px 36px;
+  clip-path: polygon(14px 0%, calc(100% - 14px) 0%, 100% 14px, 100% calc(100% - 14px), calc(100% - 14px) 100%, 14px 100%, 0% calc(100% - 14px), 0% 14px);
+  background: var(--card-bg);
+  font-family: var(--font-display);
+  font-weight: 600;
+  font-size: 13px;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  /* drop-shadow follows clip-path geometry, acting as a visible border */
+  filter: drop-shadow(0 0 1.5px var(--card-border));
+  transition: filter 0.25s, transform 0.25s;
+}
+
+.secondaryBtn:hover {
+  filter: drop-shadow(0 0 14px rgba(0, 229, 102, 0.5));
+  transform: translateY(-3px);
+}
+
+/* Hero visual */
+.heroVisual {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+  animation: slideUp 1s ease-out;
+}
+
+/* Octagonal gem frame for profile photo */
+.profileImageWrapper {
+  position: relative;
+  width: 100%;
+  max-width: 380px;
+  margin-bottom: 20px;
+  overflow: hidden;
+  clip-path: polygon(
+    18% 0%, 82% 0%,
+    100% 18%, 100% 82%,
+    82% 100%, 18% 100%,
+    0% 82%, 0% 18%
+  );
+  filter: drop-shadow(0 0 24px rgba(0, 229, 102, 0.18));
+}
+
+.profileImage {
+  width: 100%;
+  height: auto;
+  object-fit: cover;
+  display: block;
+}
+
+/* Gem-cut floating stat cards */
+.floatingCard {
+  display: inline-flex;
+  align-items: center;
+  gap: 14px;
+  background: var(--card-bg);
+  padding: 18px 28px;
+  clip-path: polygon(12px 0%, calc(100% - 12px) 0%, 100% 12px, 100% calc(100% - 12px), calc(100% - 12px) 100%, 12px 100%, 0% calc(100% - 12px), 0% 12px);
+  font-size: 14px;
+  letter-spacing: 0.02em;
+  animation: float 4s ease-in-out infinite;
+  filter: drop-shadow(0 0 1.5px var(--card-border)) drop-shadow(0 4px 12px rgba(0, 0, 0, 0.5));
+  transition: filter 0.3s;
+  width: fit-content;
+}
+
+.floatingCard:nth-child(3) {
+  margin-left: 40px;
+}
+
+.floatingCard:nth-child(4) {
+  margin-left: 20px;
+}
+
+.floatingCard:hover {
+  filter: drop-shadow(0 0 16px rgba(0, 229, 102, 0.4)) drop-shadow(0 4px 12px rgba(0, 0, 0, 0.5));
+}
+
+/* Social proof */
+.socialProof {
+  position: relative;
+  z-index: 10;
+  text-align: center;
+  padding: 48px;
+  border-top: 1px solid var(--card-border);
+  animation: slideUp 1.2s ease-out;
+}
+
+.proofLabel {
+  font-size: 11px;
+  text-transform: uppercase;
+  letter-spacing: 0.2em;
+  color: var(--muted);
+  margin-bottom: 16px;
+  font-family: var(--font-display);
+}
+
+.proofLogos {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 20px;
+  color: var(--muted);
+  font-size: 13px;
+  font-family: var(--font-display);
+  letter-spacing: 0.05em;
+}
+
+.proofDivider {
+  color: var(--card-border);
+  font-size: 8px;
+}
+
+/* Footer */
+.footer {
+  position: relative;
+  z-index: 10;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 24px 48px;
+  border-top: 1px solid var(--card-border);
+}
+
+.footerLinks {
+  display: flex;
+  gap: 24px;
+  font-size: 12px;
+  font-family: var(--font-display);
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+
+.footerLinks a {
+  opacity: 0.5;
+  transition: opacity 0.2s, color 0.2s, filter 0.2s;
+}
+
+.footerLinks a:hover {
+  opacity: 1;
+  color: var(--accent);
+  filter: drop-shadow(0 0 6px rgba(0, 229, 102, 0.5));
+}
+
+.footerNote {
+  font-size: 12px;
+  color: var(--muted);
+  font-family: var(--font-display);
+  letter-spacing: 0.05em;
+}
+
+/* Responsive */
+@media (max-width: 900px) {
+  .hero {
+    grid-template-columns: 1fr;
+    padding: 40px 24px;
+    gap: 48px;
+  }
+
+  .heroVisual {
+    order: -1;
+  }
+
+  .floatingCard:nth-child(3),
+  .floatingCard:nth-child(4) {
+    margin-left: 0;
+  }
+
+  .profileImageWrapper {
+    max-width: 280px;
+    margin: 0 auto 20px;
+  }
+
+  .heroCtas {
+    flex-direction: column;
+    width: 100%;
+  }
+
+  .primaryBtn,
+  .secondaryBtn {
+    width: 100%;
+    justify-content: center;
+  }
+
+  .footer {
+    flex-direction: column;
+    gap: 16px;
+    text-align: center;
+    padding: 24px 20px;
+  }
+
+  .socialProof {
+    padding: 32px 20px;
+  }
+
+  .proofLogos {
+    flex-wrap: wrap;
+    gap: 12px;
+  }
+}
+
+@media (max-width: 480px) {
+  .hero {
+    padding: 24px 16px;
+    gap: 32px;
+  }
+
+  .heroLabel {
+    font-size: 10px;
+    margin-bottom: 16px;
+  }
+
+  .heroTitle {
+    font-size: clamp(28px, 10vw, 44px);
+    margin-bottom: 16px;
+  }
+
+  .heroSub {
+    font-size: 14px;
+    margin-bottom: 32px;
+  }
+
+  .primaryBtn,
+  .secondaryBtn {
+    padding: 14px 28px;
+    font-size: 12px;
+  }
+
+  .floatingCard {
+    padding: 14px 20px;
+    font-size: 13px;
+  }
+
+  .socialProof {
+    padding: 24px 16px;
+  }
+
+  .proofLogos {
+    font-size: 12px;
+    gap: 10px;
+  }
+
+  .footer {
+    padding: 20px 16px;
+  }
 }

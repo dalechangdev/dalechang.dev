@@ -34,7 +34,7 @@ export default function Navigation() {
   return (
     <>
       <nav className={styles.nav}>
-        <Link href="/2024" className={styles.navLogo} onClick={closeMenu}>
+        <Link href="/next" className={styles.navLogo} onClick={closeMenu}>
           dc.
         </Link>
 
@@ -53,22 +53,22 @@ export default function Navigation() {
           className={`${styles.navLinks} ${isMenuOpen ? styles.menuOpen : ""}`}
         >
           <Link
-            href="/2024/about"
-            className={pathname === "/2024/about" ? styles.active : ""}
+            href="/next/about"
+            className={pathname === "/next/about" ? styles.active : ""}
             onClick={closeMenu}
           >
             About
           </Link>
           <Link
-            href="/2024/work"
-            className={pathname === "/2024/work" ? styles.active : ""}
+            href="/next/work"
+            className={pathname === "/next/work" ? styles.active : ""}
             onClick={closeMenu}
           >
             Work
           </Link>
           <Link
-            href="/2024/projects"
-            className={pathname === "/2024/projects" ? styles.active : ""}
+            href="/next/projects"
+            className={pathname === "/next/projects" ? styles.active : ""}
             onClick={closeMenu}
           >
             Projects

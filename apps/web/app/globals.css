@@ -1,6 +1,19 @@
 @import url('https://fonts.googleapis.com/css2?family=Cinzel:wght@400;600;700;900&family=Cinzel+Decorative:wght@400;700&family=Syne:wght@400;500;600;700;800&family=Space+Mono:ital,wght@0,400;0,700;1,400&display=swap');
 
 :root {
+  --background: #0f0f0f;
+  --foreground: #fafafa;
+  --accent: #ff6b35;
+  --accent-secondary: #00d4aa;
+  --muted: #666;
+  --card-bg: #1a1a1a;
+  --card-border: #2a2a2a;
+
+  --font-display: 'Syne', sans-serif;
+  --font-mono: 'Space Mono', monospace;
+}
+
+.theme-summer-2026 {
   --background: #060e06;
   --foreground: #e8dfc0;
   --accent: #00e566;
@@ -16,6 +29,10 @@
   --font-display: 'Cinzel', serif;
   --font-logo: 'Cinzel Decorative', serif;
   --font-mono: 'Space Mono', monospace;
+
+  background: var(--background);
+  color: var(--foreground);
+  min-height: 100vh;
 }
 
 * {
